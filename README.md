@@ -1,5 +1,12 @@
 # OAuth 2.0 Server
 
+Simple OAuth 2.0 Server based on Thephpleague and Slim framework. 
+ 
+Supported Grants:
+
+- [Password Grant](https://oauth2.thephpleague.com/authorization-server/resource-owner-password-credentials-grant/)
+- [Refresh Token Grant](https://oauth2.thephpleague.com/authorization-server/refresh-token-grant/)
+
 ## Install Dev (Docker)
 
 1. Set environments with te following examples files
