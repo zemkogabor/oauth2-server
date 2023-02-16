@@ -35,7 +35,7 @@ chmod 600 var/keys/private.key
 chmod 600 var/keys/public.key
 ```
 
-5. Run migrations
+4. Run migrations
 
 ```bash 
 docker-compose exec php php cli-migrations.php migrate
@@ -47,7 +47,7 @@ docker-compose exec php php cli-migrations.php migrate
 docker-compose exec php php cli.php create-client "Test Client" "secret" "http://127.0.0.1" --confidential
 ```
 
-5. Create user
+6. Create user
 
 ```bash 
 docker-compose exec php php cli.php create-user "test@example.com" "Test User Name" "secret"
