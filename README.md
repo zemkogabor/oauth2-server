@@ -23,7 +23,13 @@ Encryption key generate: `php -r 'echo base64_encode(random_bytes(32)), PHP_EOL;
 docker-compose run --rm php composer install
 ```
 
-3. Generate keys
+3. Start containers
+
+```bash 
+docker-compose up -d
+```
+
+4. Generate keys
 
 ```bash
 mkdir -p var/keys
@@ -35,19 +41,19 @@ chmod 600 var/keys/private.key
 chmod 600 var/keys/public.key
 ```
 
-4. Run migrations
+5. Run migrations
 
 ```bash 
 docker-compose exec php php cli-migrations.php migrate
 ```
 
-5. Create client
+6. Create client
 
 ```bash 
 docker-compose exec php php cli.php create-client "Test Client" "secret" "http://127.0.0.1" --confidential
 ```
 
-6. Create user
+7. Create user
 
 ```bash 
 docker-compose exec php php cli.php create-user "test@example.com" "Test User Name" "secret"
