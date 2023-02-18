@@ -44,19 +44,19 @@ chmod 600 var/keys/public.key
 5. Run migrations
 
 ```bash 
-docker-compose exec php php cli-migrations.php migrate
+docker-compose exec php php cli.php migrations:migrate
 ```
 
 6. Create client
 
 ```bash 
-docker-compose exec php php cli.php create-client "Test Client" "secret" "http://127.0.0.1" --confidential
+docker-compose exec php php cli.php client:create "Test Client" "secret" "http://127.0.0.1" --confidential
 ```
 
 7. Create user
 
 ```bash 
-docker-compose exec php php cli.php create-user "test@example.com" "Test User Name" "secret"
+docker-compose exec php php cli.php user:create "test@example.com" "Test User Name" "secret"
 ```
 
 ## PHP CS Fixer
@@ -72,10 +72,9 @@ PHP_CS_FIXER_IGNORE_ENV=8.2.3 php ./vendor/bin/php-cs-fixer fix --diff --dry-run
 docker buildx build -t <your_registry>/oauth-server:<version> . --platform=linux/arm64,linux/amd64 -f _docker/php/prod/Dockerfile --push
 ```
 
-Note:
+### Notes
 - The prod image already contains a pre-made var/keys folder, but not the keys. They must be created using the method mentioned above.
-
-Docker-compose example for prod image
+- Docker-compose example for prod image
 ```yaml
 version: "3.9"
 services:

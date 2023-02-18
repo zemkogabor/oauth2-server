@@ -16,40 +16,25 @@ use League\OAuth2\Server\AuthorizationServer;
 use League\OAuth2\Server\Grant\PasswordGrant;
 use League\OAuth2\Server\Grant\RefreshTokenGrant;
 use League\OAuth2\Server\ResourceServer;
-use Monolog\Handler\StreamHandler;
-use Monolog\Logger;
-use Monolog\Processor\UidProcessor;
 use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Cache\Adapter\ArrayAdapter;
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 
-return static function (ContainerBuilder $containerBuilder, array $settings) {
+return static function (ContainerBuilder $containerBuilder, array $settings, LoggerInterface $logger) {
     $containerBuilder->addDefinitions([
         'settings' => $settings,
-        LoggerInterface::class => function (ContainerInterface $container) {
-            $settingsLogger = $container->get('settings')['logger'];
-
-            $logger = new Logger($settingsLogger['name']);
-
-            $processor = new UidProcessor();
-            $logger->pushProcessor($processor);
-
-            $handler = new StreamHandler($settingsLogger['path'], $settingsLogger['level']);
-            $logger->pushHandler($handler);
-
-            return $logger;
-        },
+        LoggerInterface::class => $logger,
         EntityManager::class => function (ContainerInterface $container) {
             $settingsDoctrine = $container->get('settings')['doctrine'];
             $cache = $settingsDoctrine['dev_mode'] ?
                 new ArrayAdapter() :
-                new FilesystemAdapter(directory: $settingsDoctrine['doctrine']['cache_dir']);
+                new FilesystemAdapter(directory: $settingsDoctrine['cache_dir']);
 
             $config = ORMSetup::createAttributeMetadataConfiguration(
                 $settingsDoctrine['metadata_dirs'],
                 $settingsDoctrine['dev_mode'],
-                null,
+                $settingsDoctrine['proxy_dir'],
                 $cache
             );
 

@@ -18,6 +18,7 @@ class CreateClientCommand extends Command
 {
     private EntityManager $em;
 
+    protected static $defaultName = 'client:create';
     protected static $defaultDescription = 'Creates a new client.';
 
     public function __construct(EntityManager $entityManager, string $name = null)

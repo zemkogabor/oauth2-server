@@ -24,7 +24,8 @@ return static function (string $appEnv) {
         // Database (doctrine)
         'doctrine' => [
             'dev_mode' => $appEnv === 'dev',
-            'cache_dir' => __DIR__ . '/../var/doctrine',
+            'cache_dir' => __DIR__ . '/../var/doctrine/cache',
+            'proxy_dir' => __DIR__ . '/../var/doctrine/proxy',
             'metadata_dirs' => [__DIR__ . '/../src/Entity'],
             'types' => [
                 UuidType::NAME => UuidType::class,

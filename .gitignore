@@ -3,3 +3,4 @@
 /vendor
 /var
 .php-cs-fixer.cache
+doctrine_proxy

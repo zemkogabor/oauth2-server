@@ -40,7 +40,6 @@ COPY src /app/src
 
 # Copy files
 COPY cli.php /app
-COPY cli-migrations.php /app
 
 # Create keys folder
 RUN mkdir -p /app/var/keys
@@ -49,4 +48,7 @@ VOLUME /app/var/keys
 ARG wwwdatauid=1000
 RUN usermod -u $wwwdatauid www-data
 RUN chown -R www-data:www-data /app
+
+# https://www.doctrine-project.org/projects/doctrine-orm/en/2.14/reference/advanced-configuration.html#generating-proxy-classes
+ENTRYPOINT sh -c "php cli.php orm:generate-proxies && php-fpm"
 

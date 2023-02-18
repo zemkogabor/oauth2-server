@@ -17,6 +17,7 @@ class CreateUserCommand extends Command
 {
     private EntityManager $em;
 
+    protected static $defaultName = 'user:create';
     protected static $defaultDescription = 'Creates a new user.';
 
     public function __construct(EntityManager $entityManager, string $name = null)
