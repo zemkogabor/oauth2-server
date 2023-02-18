@@ -3,11 +3,18 @@
 declare(strict_types = 1);
 
 use App\ErrorRender\JsonErrorRenderer;
+use App\Middleware\CorsMiddleware;
+use GuzzleHttp\Psr7\Response;
+use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LoggerInterface;
 use Slim\App;
 
 return static function (App $app) {
     // Routing
+    $app->options('/{routes:.+}', function (ServerRequestInterface $request, Response $response) {
+        return $response;
+    });
+    $app->add(new CorsMiddleware());
     $app->addRoutingMiddleware();
 
     // Body parsing
