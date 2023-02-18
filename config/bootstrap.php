@@ -7,7 +7,7 @@ use DI\ContainerBuilder;
 require __DIR__ . '/../vendor/autoload.php';
 
 $settings = (require __DIR__ . '/settings.php')(
-    $_ENV['APP_ENV'] ?? $_SERVER['APP_ENV'] ?? 'dev'
+    $_ENV['APP_ENV'] ?? 'dev'
 );
 
 $containerBuilder = new ContainerBuilder();

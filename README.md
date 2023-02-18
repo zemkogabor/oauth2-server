@@ -60,3 +60,27 @@ docker-compose exec php bash
 PHP_CS_FIXER_IGNORE_ENV=8.2.3 php ./vendor/bin/php-cs-fixer fix --diff --dry-run --config .php-cs-fixer.php --verbose
 ```
 
+## Build prod image
+
+```bash
+docker buildx build -t <your_registry>/oauth-server:<version> . --platform=linux/arm64,linux/amd64 -f _docker/php/prod/Dockerfile --push
+```
+
+Note:
+- The prod image already contains a pre-made var/keys folder, but not the keys. They must be created using the method mentioned above.
+
+Docker-compose example for prod image
+```yaml
+version: "3.9"
+services:
+  php_prod:
+    image: oauth2-server-prod-image
+    env_file:
+      - _env/php.env
+    restart: unless-stopped
+    volumes:
+      - ./var/keys:/app/var/keys
+    ports:
+      - "8888:8888"
+    command: php -S 0.0.0.0:8888 -t /app/public/
+```
