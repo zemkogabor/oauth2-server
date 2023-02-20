@@ -65,20 +65,19 @@ return static function (ContainerBuilder $containerBuilder, array $settings, Log
                 $refreshTokenRepository,
             );
 
-            $passwordGrant->setRefreshTokenTTL(new DateInterval('P1M')); // refresh tokens will expire after 1 month
+            $passwordGrant->setRefreshTokenTTL(new DateInterval($settings['refresh_token_ttl']));
 
-            // Enable the password grant on the server with a token TTL of 5 minute
             $server->enableGrantType(
                 $passwordGrant,
-                new DateInterval('PT5M'),
+                new DateInterval($settings['access_token_ttl']),
             );
 
             $refreshTokenGrant = new RefreshTokenGrant($refreshTokenRepository);
-            $refreshTokenGrant->setRefreshTokenTTL(new DateInterval('P1M')); // The refresh token will expire in 1 month
+            $refreshTokenGrant->setRefreshTokenTTL(new DateInterval($settings['refresh_token_ttl']));
 
             $server->enableGrantType(
                 $refreshTokenGrant,
-                new \DateInterval('PT5M') // The new access token will expire after 5 minute
+                new \DateInterval($settings['access_token_ttl'])
             );
 
             return $server;

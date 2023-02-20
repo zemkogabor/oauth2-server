@@ -13,6 +13,9 @@ return static function (string $appEnv) {
         'display_error_details' => false,
         'log_errors' => true,
         'encryption_key' => $_ENV['ENCRYPTION_KEY'],
+        # "ISO 8601" TTL intervals: https://en.wikipedia.org/wiki/ISO_8601#Durations
+        'access_token_ttl' => $_ENV['ACCESS_TOKEN_TTL'] ?? 'PT5M',
+        'refresh_token_ttl' => $_ENV['REFRESH_TOKEN_TTL'] ?? 'P1M',
 
         // Logger
         'logger' => [
