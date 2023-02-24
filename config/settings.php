@@ -10,8 +10,6 @@ return static function (string $appEnv) {
         'env' => $appEnv,
 
         'di_compilation_path' => __DIR__ . '/../var/cache/di_compilation',
-        'display_error_details' => false,
-        'log_errors' => true,
         'encryption_key' => $_ENV['ENCRYPTION_KEY'],
         # "ISO 8601" TTL intervals: https://en.wikipedia.org/wiki/ISO_8601#Durations
         'access_token_ttl' => $_ENV['ACCESS_TOKEN_TTL'] ?? 'PT5M',
@@ -48,7 +46,6 @@ return static function (string $appEnv) {
     if ($appEnv === 'dev') {
         // Overrides for development mode
         $settings['di_compilation_path'] = null;
-        $settings['display_error_details'] = true;
     }
 
     return $settings;

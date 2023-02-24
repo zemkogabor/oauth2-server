@@ -11,8 +11,8 @@ Supported Grants:
 
 1. Set environments with te following examples files
 ```bash
-cp _env/php.example.env  php.env
-cp _env/postgres.example.env  postgres.env
+cp _env/php.example.env  _env/php.env
+cp _env/postgres.example.env  _env/postgres.env
 ```
 
 Encryption key generate: `php -r 'echo base64_encode(random_bytes(32)), PHP_EOL;'`
