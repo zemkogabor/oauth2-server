@@ -13,18 +13,14 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class CreateUserCommand extends Command
+final class CreateUserCommand extends Command
 {
-    private EntityManager $em;
-
     protected static $defaultName = 'user:create';
     protected static $defaultDescription = 'Creates a new user.';
 
-    public function __construct(EntityManager $entityManager, string $name = null)
+    public function __construct(protected EntityManager $entityManager, string $name = null)
     {
         parent::__construct($name);
-
-        $this->em = $entityManager;
     }
 
     protected function configure(): void
@@ -49,8 +45,8 @@ class CreateUserCommand extends Command
         $client->setName($name);
         $client->setPassword($password);
 
-        $this->em->persist($client);
-        $this->em->flush();
+        $this->entityManager->persist($client);
+        $this->entityManager->flush();
 
         $output->writeln('<info>User created</info>');
         $output->writeln('Email: ' . $client->getEmail());

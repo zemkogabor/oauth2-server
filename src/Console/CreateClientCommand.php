@@ -14,18 +14,15 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class CreateClientCommand extends Command
+final class CreateClientCommand extends Command
 {
-    private EntityManager $em;
 
     protected static $defaultName = 'client:create';
     protected static $defaultDescription = 'Creates a new client.';
 
-    public function __construct(EntityManager $entityManager, string $name = null)
+    public function __construct(protected EntityManager $entityManager, string $name = null)
     {
         parent::__construct($name);
-
-        $this->em = $entityManager;
     }
 
     protected function configure(): void
@@ -58,8 +55,8 @@ class CreateClientCommand extends Command
         $client->setRedirectUri($redirectUri);
         $client->setIsconfidential($isConfidential);
 
-        $this->em->persist($client);
-        $this->em->flush();
+        $this->entityManager->persist($client);
+        $this->entityManager->flush();
 
         $output->writeln('<info>Client created</info>');
         $output->writeln('Name: ' . $client->getName());
