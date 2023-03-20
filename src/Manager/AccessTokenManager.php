@@ -5,11 +5,13 @@ declare(strict_types = 1);
 namespace App\Manager;
 
 use App\Entity\AccessTokenEntity;
+use App\Entity\RefreshTokenEntity;
 use DateTimeImmutable;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Exception\ORMException;
 use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\Query\Expr\Join;
 use Psr\Log\LoggerInterface;
 
 class AccessTokenManager
@@ -25,9 +27,14 @@ class AccessTokenManager
     public function clearExpired(): int
     {
         $accessTokens = $this->em->createQueryBuilder()
-            ->select('at', 'rt')
+            ->select('at')
             ->from(AccessTokenEntity::class, 'at')
-            ->leftJoin('at.refreshToken', 'rt')
+            ->leftJoin(
+                RefreshTokenEntity::class,
+                'rt',
+                Join::WITH,
+                'rt.accessToken = at.id'
+            )
             ->where('rt.id IS NULL')
             ->andWhere('at.expiry_at < :expiry_at')
             ->setParameter('expiry_at', new DateTimeImmutable(), Types::DATETIME_IMMUTABLE)
