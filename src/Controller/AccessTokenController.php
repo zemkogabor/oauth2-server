@@ -2,23 +2,22 @@
 
 declare(strict_types = 1);
 
-namespace App\Action;
+namespace App\Controller;
 
 use GuzzleHttp\Psr7\Response;
 use League\OAuth2\Server\AuthorizationServer;
 use League\OAuth2\Server\Exception\OAuthServerException;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Psr\Http\Server\RequestHandlerInterface;
 use Psr\Log\LoggerInterface;
 
-class AccessTokenAction implements RequestHandlerInterface
+class AccessTokenController
 {
     public function __construct(protected LoggerInterface $logger, protected AuthorizationServer $authorizationServer)
     {
     }
 
-    public function handle(ServerRequestInterface $request): ResponseInterface
+    public function actionAccessToken(ServerRequestInterface $request): ResponseInterface
     {
         $response = new Response();
 

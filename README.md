@@ -63,7 +63,7 @@ docker-compose exec php php cli.php user:create "test@example.com" "Test User Na
 
 ```bash
 docker-compose exec php bash
-PHP_CS_FIXER_IGNORE_ENV=8.2.3 php ./vendor/bin/php-cs-fixer fix --diff --dry-run --config .php-cs-fixer.php --verbose
+php ./vendor/bin/php-cs-fixer fix --diff --dry-run --config .php-cs-fixer.php --verbose
 ```
 
 ## Build prod image

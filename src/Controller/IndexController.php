@@ -2,21 +2,19 @@
 
 declare(strict_types = 1);
 
-namespace App\Action;
+namespace App\Controller;
 
 use GuzzleHttp\Psr7\Response;
 use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
-use Psr\Http\Server\RequestHandlerInterface;
 use Psr\Log\LoggerInterface;
 
-class IndexAction implements RequestHandlerInterface
+class IndexController
 {
     public function __construct(protected LoggerInterface $logger)
     {
     }
 
-    public function handle(ServerRequestInterface $request): ResponseInterface
+    public function actionIndex(): ResponseInterface
     {
         $response = new Response();
 

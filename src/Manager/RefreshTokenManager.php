@@ -6,7 +6,6 @@ namespace App\Manager;
 
 use App\Entity\RefreshTokenEntity;
 use DateTimeImmutable;
-use Doctrine\DBAL\ParameterType;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\EntityManager;
 use Psr\Log\LoggerInterface;

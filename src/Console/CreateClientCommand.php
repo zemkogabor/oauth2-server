@@ -16,7 +16,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 final class CreateClientCommand extends Command
 {
-
     protected static $defaultName = 'client:create';
     protected static $defaultDescription = 'Creates a new client.';
 
