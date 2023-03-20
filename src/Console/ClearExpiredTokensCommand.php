@@ -8,14 +8,13 @@ use App\Manager\AccessTokenManager;
 use App\Manager\RefreshTokenManager;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
 final class ClearExpiredTokensCommand extends Command
 {
     protected static $defaultName = 'clear-expired-tokens';
-    protected static $defaultDescription = 'Clears all expired access and/or refresh tokens.';
+    protected static $defaultDescription = 'Clears all expired access and refresh tokens.';
 
     public function __construct(
         protected RefreshTokenManager $refreshTokenManager,
@@ -24,34 +23,12 @@ final class ClearExpiredTokensCommand extends Command
         parent::__construct();
     }
 
-    protected function configure(): void
-    {
-        $this->addOption(
-            'refresh-tokens',
-            'r',
-            InputOption::VALUE_NONE,
-            'Clear expired refresh tokens.'
-        );
-
-        $this->addOption(
-            'access-tokens',
-            'a',
-            InputOption::VALUE_NONE,
-            'Clear expired access tokens.'
-        );
-    }
-
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
 
-        if ($input->getOption('refresh-tokens')) {
-            $this->clearExpiredRefreshTokens($io);
-        }
-
-        if ($input->getOption('access-tokens')) {
-            $this->clearExpiredAccessTokens($io);
-        }
+        $this->clearExpiredRefreshTokens($io);
+        $this->clearExpiredAccessTokens($io);
 
         return Command::SUCCESS;
     }

@@ -31,6 +31,10 @@ class AccessTokenEntity implements AccessTokenEntityInterface
     #[ORM\JoinColumn(name: 'client_id', referencedColumnName: 'id', nullable: false)]
     private ClientEntity $client;
 
+    #[ORM\OneToOne]
+    #[ORM\JoinColumn(name: 'id', referencedColumnName: 'access_token_id', nullable: false)]
+    private RefreshTokenEntity $refreshToken;
+
     #[ORM\Column]
     private string $token;
 
