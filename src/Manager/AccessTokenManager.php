@@ -26,6 +26,7 @@ class AccessTokenManager
      */
     public function clearExpired(): int
     {
+        // todo: OR revoked
         $accessTokens = $this->em->createQueryBuilder()
             ->select('at')
             ->from(AccessTokenEntity::class, 'at')

@@ -18,6 +18,7 @@ class RefreshTokenManager
 
     public function clearExpired(): int
     {
+        // todo: OR revoked
         $numOfClearedRefreshTokens = $this->em->createQueryBuilder()
             ->delete(RefreshTokenEntity::class, 'rt')
             ->where('rt.expiry_at < :expiry_at')
