@@ -27,15 +27,18 @@ class ClientEntity implements ClientEntityInterface
     #[ORM\Column]
     private string $name;
 
-    /**
-     * TODO: Hash secret
-     */
-    #[ORM\Column]
-    private string $secret;
+    #[ORM\Column(nullable: true)]
+    private string|null $secret;
 
     #[ORM\Column]
     private string $redirect_uri;
 
+    /**
+     * The client secret may or may not be provided depending on the request sent by the client.
+     * If the client is confidential (i.e. is capable of securely storing a secret) then the secret must be validated.
+     *
+     * if false, the client is public
+     */
     #[ORM\Column]
     private bool $is_confidential;
 

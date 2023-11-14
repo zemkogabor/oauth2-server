@@ -27,7 +27,11 @@ class UserRepository extends EntityRepository implements UserRepositoryInterface
      */
     public function getUserEntityByUserCredentials($username, $password, $grantType, ClientEntityInterface $clientEntity): ?UserEntity
     {
-        $user = $this->findOneBy(['email' => $username]);
+        $user = $this->findOneBy(['email' => $username, 'deleted_at' => null]);
+
+        if ($user === null) {
+            return null;
+        }
 
         if (!password_verify($password, $user->getPassword())) {
             return null;

@@ -17,7 +17,6 @@ cp _env/postgres.example.env  _env/postgres.env
 
 Encryption key generate: `php -r 'echo base64_encode(random_bytes(32)), PHP_EOL;'`
 
-
 2. Install backend framework and dependencies
 ```bash
 docker-compose run --rm php composer install
@@ -47,16 +46,43 @@ chmod 600 var/keys/public.key
 docker-compose exec php php cli.php migrations:migrate
 ```
 
-6. Create client
+6.  Create client
 
+confidential:
 ```bash 
-docker-compose exec php php cli.php client:create "Test Client" "secret" "http://127.0.0.1" --confidential
+docker-compose exec php php cli.php client:create "Test Client" "http://127.0.0.1" "secret" --confidential
+```
+
+public:
+```bash 
+docker-compose exec php php cli.php client:create "Test Client" "http://127.0.0.1"
 ```
 
 7. Create user
 
 ```bash 
 docker-compose exec php php cli.php user:create "test@example.com" "Test User Name" "secret"
+```
+
+8. Login
+```
+curl --location --request POST 'http://127.0.0.1:8888/access_token' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "grant_type": "password",
+    "client_id": "713446ac-4950-4166-aa77-6b78f3265c0a",
+    "client_secret": "secret",
+    "scope": "email basic name",
+    "username": "test@example.com",
+    "password": "secret"
+}'
+```
+
+9. Get active user
+
+```
+curl --location --request GET 'http://127.0.0.1.nip.io:8888/user' \
+--header 'Authorization: Bearer <secret>'
 ```
 
 ## PHP CS Fixer

@@ -10,10 +10,15 @@ use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use League\OAuth2\Server\Repositories\ClientRepositoryInterface;
 use Psr\Log\LoggerInterface;
-use Ramsey\Uuid\Uuid;
 
+/**
+ * @method ClientEntity|null findOneBy(array $criteria, array $orderBy = null)
+ * @method ClientEntity[] findBy(array $criteria, ?array $orderBy = null, $limit = null, $offset = null)
+ */
 class ClientRepository extends EntityRepository implements ClientRepositoryInterface
 {
+    private ClientEntity|null $_clientEntity;
+
     public function __construct(protected LoggerInterface $logger, protected EntityManager $em)
     {
         parent::__construct($em, new ClassMetadata(ClientEntity::class));
@@ -24,7 +29,11 @@ class ClientRepository extends EntityRepository implements ClientRepositoryInter
      */
     public function getClientEntity($clientIdentifier): ?ClientEntity
     {
-        return $this->findOneBy(['uuid' => $clientIdentifier]);
+        if (isset($this->_clientEntity)) {
+            return $this->_clientEntity;
+        }
+
+        return $this->_clientEntity = $this->findOneBy(['uuid' => $clientIdentifier]);
     }
 
     /**
@@ -32,19 +41,21 @@ class ClientRepository extends EntityRepository implements ClientRepositoryInter
      */
     public function validateClient($clientIdentifier, $clientSecret, $grantType): bool
     {
-        if (!Uuid::isValid($clientIdentifier)) {
+        $client = $this->getClientEntity($clientIdentifier);
+
+        if ($client === null) {
             return false;
         }
 
-        $client = $this->findOneBy([
-            'uuid' => $clientIdentifier,
-            'secret' => $clientSecret,
-        ]);
+        if ($client->isConfidential()) {
+            // If the client is confidential the secret is required
+            if ($clientSecret === null) {
+                return false;
+            }
 
-        if ($client !== null) {
-            return true;
+            return hash_equals($client->getSecret(), (string) $clientSecret);
         }
 
-        return false;
+        return true;
     }
 }

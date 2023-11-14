@@ -5,6 +5,9 @@ declare(strict_types = 1);
 use Psr\Log\LogLevel;
 use Ramsey\Uuid\Doctrine\UuidType;
 
+/**
+ * todo: Use class (or classes) instead of associative array
+ */
 return static function (string $appEnv) {
     $settings = [
         'env' => $appEnv,
@@ -14,6 +17,8 @@ return static function (string $appEnv) {
         # "ISO 8601" TTL intervals: https://en.wikipedia.org/wiki/ISO_8601#Durations
         'access_token_ttl' => $_ENV['ACCESS_TOKEN_TTL'] ?? 'PT5M',
         'refresh_token_ttl' => $_ENV['REFRESH_TOKEN_TTL'] ?? 'P1M',
+        'admin_api_enabled' => $_ENV['ADMIN_API_ENABLED'] === '1',
+        'admin_api_key' => $_ENV['ADMIN_API_KEY'],
 
         // Logger
         'logger' => [

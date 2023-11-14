@@ -7,7 +7,7 @@ COPY composer.json /app
 
 RUN composer install --ignore-platform-reqs --prefer-dist --no-scripts --no-progress --no-interaction --no-dev
 
-FROM php:8.2-fpm-bullseye
+FROM php:8.2-fpm-bookworm
 
 WORKDIR /app
 

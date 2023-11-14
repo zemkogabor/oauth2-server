@@ -27,8 +27,8 @@ final class CreateClientCommand extends Command
     protected function configure(): void
     {
         $this->addArgument('name', InputArgument::REQUIRED, 'Client name');
-        $this->addArgument('secret', InputArgument::REQUIRED, 'Client secret');
         $this->addArgument('redirect-uri', InputArgument::REQUIRED, 'Redirect URI');
+        $this->addArgument('secret', InputArgument::OPTIONAL, 'Client secret');
         $this->addOption(
             'confidential',
             'c',
@@ -44,14 +44,22 @@ final class CreateClientCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $name = $input->getArgument('name');
-        $secret = $input->getArgument('secret');
         $redirectUri = $input->getArgument('redirect-uri');
+
+        if ($input->hasArgument('secret')) {
+            $secret = $input->getArgument('secret');
+        } else {
+            $secret = null;
+        }
+
         $isConfidential = $input->getOption('confidential');
 
         $client = new ClientEntity();
         $client->setName($name);
-        $client->setSecret($secret);
         $client->setRedirectUri($redirectUri);
+        if ($secret !== null) {
+            $client->setSecret($secret);
+        }
         $client->setIsconfidential($isConfidential);
 
         $this->entityManager->persist($client);
@@ -60,8 +68,10 @@ final class CreateClientCommand extends Command
         $output->writeln('<info>Client created</info>');
         $output->writeln('Name: ' . $client->getName());
         $output->writeln('Client ID: ' . $client->getIdentifier());
-        $output->writeln('Secret: ' . $client->getSecret());
         $output->writeln('Redirect Uri: ' . $client->getRedirectUri());
+        if ($secret !== null) {
+            $output->writeln('Secret: ' . $client->getSecret());
+        }
         $output->writeln('Confidential: ' . ($client->isConfidential() ? 'Yes' : 'No'));
 
         return Command::SUCCESS;

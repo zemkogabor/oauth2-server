@@ -19,6 +19,9 @@ class UserEntity implements UserEntityInterface
     #[ORM\Column]
     private int $id;
 
+    /**
+     * the email is also the login username
+     */
     #[ORM\Column(length: 180)]
     private string $email;
 
